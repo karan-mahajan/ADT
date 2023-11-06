@@ -1,0 +1,127 @@
+@use '../../assets/styles/_variables';
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  gap: 25px;
+  z-index: 5;
+  background: variables.$bg-color-beta;
+  position: relative;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  hr {
+    border: none;
+    border-bottom: 0.5px solid variables.$br-color-beta;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-field-error {
+  color: variables.$text-color-iota;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.login-background {
+  &-cloud-one {
+    position: absolute;
+    right: 220px;
+    top: 70px;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-cloud-two {
+    position: absolute;
+    right: 0;
+    top: 90px;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-cloud-three {
+    position: absolute;
+    left: 0;
+    top: 250px;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-cloud-four {
+    position: absolute;
+    left: 50px;
+    top: 270px;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-right-oval {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 25%;
+  }
+  &-left-oval {
+    position: absolute;
+    left: -250px;
+    bottom: 0;
+    height: 25%;
+  }
+}
+
+.contact-us {
+  background: radial-gradient(
+    163.1% 163.1% at 50% 50%,
+    variables.$color-black-4 0%,
+    variables.$color-black-3 100%
+  );
+  color: variables.$text-color-beta;
+  box-shadow: -6px -6px 12px rgba(255, 255, 255, 0.04), 6px 6px 12px rgba(0, 0, 0, 0.16);
+  border-radius: 6px;
+  border: none;
+  padding-block: 15px;
+  cursor: pointer;
+  font-family: variables.$font-family-alpha;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 22px;
+  letter-spacing: -0.025em;
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  z-index: 2;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.forgot-password-block {
+  z-index: 2;
+  a {
+    color: variables.$text-color-gamma;
+    font-size: 0.85rem;
+  }
+  text-align: right;
+}
+
+.login-logo {
+  z-index: 5;
+}

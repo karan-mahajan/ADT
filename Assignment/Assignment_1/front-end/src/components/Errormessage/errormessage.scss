@@ -1,0 +1,10 @@
+@use '../../assets/styles/_variables';
+
+.error-msg {
+  color: variables.$text-color-lambda;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}

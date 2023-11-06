@@ -1,0 +1,46 @@
+@use '../../assets/styles/_variables';
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.86rem;
+  line-height: 12px;
+  letter-spacing: -0.025em;
+  position: relative;
+  input {
+    padding: 15px;
+    border: 0.5px solid variables.$br-color-beta;
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: variables.$bg-color-eta;
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 20px;
+    letter-spacing: -0.03em;
+    width: 360px;
+    &[type='text']:focus,
+    &[type='password']:focus {
+      outline: 1px solid variables.$br-color-beta;
+    }
+  }
+}
+
+.error-state {
+  border: 0.5px solid variables.$br-color-zeta;
+}
+
+.show-hide-password {
+  position: absolute;
+  cursor: pointer;
+  right: 15px;
+  top: 35px;
+}
+
+@media only screen and (max-width: variables.$xxs-screen) {
+  label {
+    input {
+      width: unset;
+    }
+  }
+}

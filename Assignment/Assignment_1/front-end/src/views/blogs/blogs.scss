@@ -1,0 +1,367 @@
+@use '../../assets/styles/_variables';
+
+button {
+    cursor: pointer;
+}
+
+.perform-action {
+    display: flex;
+    gap: 10px; // Provides spacing between buttons
+    justify-content: center; // Center the buttons within the div
+    align-items: center;
+
+    .perform {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.3s ease; // Smooth transitions for hover effects
+
+        // Generic styling for both buttons
+        &.perform {
+            background-color: #007ACC;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #005B9A;
+                transform: translateY(-2px); // Slight upward lift for a 3D effect
+            }
+
+            &:active {
+                transform: translateY(0); // Resets the position when button is clicked
+            }
+        }
+
+        // Styling specifically for the Delete button
+        &[class*="Delete"] {
+            background-color: #E74C3C; // A warning red color
+
+            &:hover {
+                background-color: #C0392B; // A slightly darker shade for hover
+            }
+        }
+    }
+}
+
+.form-field.query {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // Provides spacing between inputs; Can be adjusted as needed
+    max-width: 400px; // Can be adjusted based on design requirements
+    margin: 20px auto; // Center the form field; Adjust as needed
+
+    .input {
+        padding: 10px 15px;
+        font-size: 16px;
+        border: 1px solid #d1d1d1;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+
+        // Placeholder styles
+        &::placeholder {
+            color: #a0a0a0;
+        }
+
+        // Focus effect for better user experience
+        &:focus {
+            border-color: #007ACC; // A noticeable color for focus
+            box-shadow: 0 0 10px rgba(0, 122, 204, 0.2); // A subtle shadow for a depth effect on focus
+        }
+    }
+}
+
+.container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto; // Centers the container on the page if the viewport width is greater than 800px
+
+    h1 {
+        font-size: 28px;
+        color: #333;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+
+        &.add-blog {
+            text-align: left;
+
+            a {
+                text-decoration: none;
+                color: #007ACC;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: #005B9A; // Slightly darker shade for hover
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &.logout {
+            text-align: right;
+            cursor: pointer;
+            color: #E74C3C; // Red to indicate caution
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .noblog {
+        font-size: 24px;
+        color: #777;
+        text-align: center;
+        margin: 40px 0;
+        border-top: 2px dashed #ddd;
+        border-bottom: 2px dashed #ddd;
+        padding: 20px 0;
+
+        &:hover {
+            color: #555;
+            text-decoration: underline;
+        }
+    }
+}
+
+.noblog {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px; // Slightly large for clear visibility
+    font-weight: 500; // Semi-bold for emphasis
+    color: #777777; // A neutral gray that's not too overwhelming
+    text-align: center; // Center the text for better presentation
+    margin: 40px 0; // Spacing from elements above and below
+    border-top: 2px dashed #ddd; // Optional separator
+    border-bottom: 2px dashed #ddd; // Optional separator
+    padding: 20px 0; // Padding to give space between the dashed lines and text
+
+    // For a bit of user interaction and to draw attention
+    &:hover {
+        color: #555555; // Slightly darker on hover
+        text-decoration: underline; // Underline on hover for emphasis
+    }
+}
+
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    /* Optional */
+}
+
+.blogs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+
+    .blog-cont {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &-one {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        & div {
+            display: flex;
+            gap: 10px;
+
+            .btn {
+                background: black;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                max-height: 40px;
+            }
+        }
+
+        .comments-cont {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e4e4e4;
+            margin-top: 20px;
+            flex-direction: column;
+
+            .comments-cont-one {
+                background-color: #ffffff;
+                border-radius: 5px;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+                p {
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                    color: #333;
+                }
+
+                span {
+                    font-size: 14px;
+                    color: #777;
+                    font-style: italic;
+
+                    &:before {
+                        content: "Commented ";
+                    }
+                }
+            }
+
+            .add-comment {
+                display: flex;
+                align-items: center;
+                border: 1px solid #e4e4e4;
+                padding: 5px;
+                border-radius: 5px;
+
+                input[type="text"] {
+                    flex-grow: 1;
+                    padding: 8px;
+                    border: none;
+                    border-radius: 4px 0 0 4px;
+                    outline: none;
+                    font-size: 16px;
+
+                    &:focus {
+                        border: 1px solid #007ACC;
+                    }
+                }
+
+                button {
+                    background-color: #007ACC;
+                    color: #ffffff;
+                    padding: 8px 12px;
+                    border: none;
+                    border-radius: 0 4px 4px 0;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: #005B9A;
+                    }
+                }
+            }
+        }
+    }
+
+    .blog-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        min-width: 400px;
+        position: relative;
+
+        .blog-user {
+            font-family: 'Arial', sans-serif; // Consistent font with other elements
+            font-size: 16px; // Smaller than the blog title, but still clearly legible
+            color: #666666; // A gray that's not too dark but still easily readable
+            margin-top: 8px; // Some spacing from the title or other elements above
+            font-style: italic; // Optional, adds a touch of style to indicate metadata
+            font-weight: 400; // Regular weight, not too bold
+
+            &:before {
+                content: "Written by - "; // Optional prefix to 'Created By' to give more context
+                color: #888888; // Slightly lighter color than the main text
+            }
+
+            // If you have any hover effects or links for the user
+            &:hover {
+                color: #007ACC; // An example highlight color
+                text-decoration: none; // Remove underline for cleaner look
+            }
+        }
+
+        .comments {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #2980b9;
+            }
+        }
+
+        .categories-container,
+        .tags-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+
+            h3 {
+                margin-right: 10px;
+            }
+
+            .category,
+            .tag {
+                display: inline-block;
+                padding: 5px 10px;
+                margin-right: 5px;
+                border-radius: 4px;
+                background-color: #eee;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: #ddd;
+                }
+            }
+
+            .tag {
+                background-color: #d7d7d7;
+
+                &:hover {
+                    background-color: #c7c7c7;
+                }
+            }
+        }
+
+        .created-at {
+
+            display: block;
+            font-size: 14px;
+            color: #888888;
+            /* subtle gray */
+            margin-top: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #f4f4f4;
+            /* very light gray background for distinction */
+            border: 1px solid #e0e0e0;
+            /* light border for a bit of depth */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+            /* very subtle shadow for a raised effect */
+            font-family: 'Arial', sans-serif;
+            /* a standard, readable font */
+            letter-spacing: 0.5px;
+            /* spacing the characters slightly for better readability */
+
+
+            span b {
+                color: #555555;
+                /* slightly darker shade for emphasis */
+                font-weight: bold;
+            }
+        }
+    }
+}
