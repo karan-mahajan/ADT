@@ -47,7 +47,7 @@ function Login() {
       });
       setOpenLoading(false);
       localStorage.setItem('user', email);
-      navigate('/blogs');
+      navigate('/article');
     } catch (error) {
       localStorage.clear();
       setUserAuthenticateErrors(errorMessage.UNAUTHORIZED_ERROR_MESSAGE);

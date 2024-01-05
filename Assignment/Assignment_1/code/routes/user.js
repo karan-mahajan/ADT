@@ -54,10 +54,10 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'Invalid Date of Birth' });
         }
 
-        const existingUser = await User.findOne({ email }).exec();
-        if (existingUser) {
-            return res.status(409).json({ message: 'User Already Exists' });
-        }
+        // const existingUser = await User.findOne({ email }).exec();
+        // if (existingUser) {
+        //     return res.status(409).json({ message: 'User Already Exists' });
+        // }
 
         const newPassword = await hashPassword(password);
         const newUserDetails = {

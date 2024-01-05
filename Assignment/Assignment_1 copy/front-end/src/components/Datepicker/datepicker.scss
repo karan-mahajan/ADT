@@ -1,0 +1,205 @@
+@use '../../assets/styles/_variables';
+
+.date-picker {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+    position: relative;
+    z-index: 3;
+  }
+}
+
+.btn-apply {
+  padding: 12px 24px;
+}
+
+// overriding the react-date-picker classes
+
+.react-calendar {
+  border-radius: 12px;
+  width: 300px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border: none;
+  font-family: variables.$font-family-alpha;
+
+  &__navigation {
+    &__label__labelText--from {
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 24px;
+      font-family: variables.$font-family-alpha;
+    }
+
+    &__label[type='button'] {
+      max-width: 110px;
+    }
+
+    margin-bottom: 0;
+    justify-content: space-between;
+
+    &__prev2-button,
+    &__next2-button {
+      display: none;
+    }
+  }
+
+  &__tile--now {
+    background: none;
+
+    abbr {
+      font-weight: 600;
+      background: none;
+      color: variables.$text-color-alpha;
+    }
+  }
+
+  &__tile {
+    padding: 0px;
+  }
+
+  &__month-view__days__day--weekend {
+    color: variables.$text-color-alpha;
+  }
+
+  &__month-view__weekdays {
+    padding: 15px 10px;
+
+    &__weekday {
+      padding: 0;
+
+      abbr {
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.8rem;
+        line-height: 14px;
+        color: variables.$text-color-zeta;
+      }
+    }
+  }
+
+  &__month-view__days {
+    padding: 10px;
+    padding-top: 0px;
+    row-gap: 5px;
+
+    &__day--neighboringMonth {
+      color: variables.$text-color-theta;
+    }
+
+    &__day {
+      padding: 5px;
+
+      abbr {
+        font-family: variables.$font-family-alpha;
+        font-weight: 400;
+        font-size: 1.05rem;
+        line-height: 24px;
+      }
+    }
+  }
+
+  &__navigation__arrow {
+    font-size: 2rem;
+    color: variables.$text-color-zeta;
+    min-width: 50px;
+  }
+}
+
+.react-date-picker {
+  background: variables.$bg-color-beta;
+
+  &__wrapper {
+    border: 1px solid variables.$br-color-epsilon;
+    box-sizing: border-box;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    padding: 10px;
+    gap: 10px;
+
+    &:hover {
+      border-color: variables.$br-color-alpha;
+    }
+  }
+
+  &__inputGroup {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 24px;
+    font-family: variables.$font-family-alpha;
+    color: variables.$text-color-alpha;
+  }
+
+  &__button {
+    padding: 0px 3px;
+  }
+
+  &__calendar {
+    z-index: 20;
+  }
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus,
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__navigation button:enabled:hover {
+  background: variables.$bg-color-delta;
+  border-radius: 8px;
+
+  abbr {
+    background: variables.$bg-color-delta;
+  }
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 10px;
+}
+
+@media only screen and (max-width: variables.$sm-screen) {
+  .react-calendar {
+    width: 275px;
+
+    &__month-view__weekdays {
+      padding: 5px 10px;
+    }
+
+    &__month-view__days {
+      row-gap: 0px;
+    }
+  }
+
+  .date-picker-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .react-date-picker {
+    &__inputGroup {
+      font-size: 0.8rem;
+    }
+
+    &__wrapper {
+      padding: 5px;
+      gap: 0;
+    }
+  }
+}
+
+.filter-content-label {
+  font-size: 0.86rem;
+  line-height: 12px;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}

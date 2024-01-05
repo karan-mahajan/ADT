@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
-const blogRoute = require('./routes/blog');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const User = require('./model/userSchema');
-const Blog = require('./model/blogSchema');
+const Recommendation = require('./model/userRecommendation');
+const { default: axios } = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -15,7 +15,7 @@ app.use(express.json());
 
 const connect = async () => {
     try {
-        mongoose.connect(process.env.MONGO_URL, {
+        mongoose.connect('mongodb+srv://karanmahajan:karan@cluster0.h6yc9uf.mongodb.net/adt', {
             useUnifiedTopology: true,
             useNewUrlParser: true
         });
@@ -48,36 +48,82 @@ const verifyToken = (req, res, next) => {
 };
 
 app.use('/', userRoute);
-app.use('/blog', verifyToken, blogRoute);
 
-app.post('/getuser', verifyToken, async (req, res) => {
+app.get('/', (req, res) => {
+    res.send("Welcome to ADT Assignment");
+})
+
+
+app.post('/addrecommendation', verifyToken, async (req, res) => {
     try {
-        const { userId } = req.body;
-        const userDetails = await User.findOne({ _id: userId }).exec();
-        res.status(200).json({
-            fullName: `${userDetails?.firstName} ${userDetails?.lastName}`
-        });
+        const { articlesId } = req.body;
+        const { user } = req.userData;
+        const userDetails = await User.findOne({ email: user.email }).exec();
+        await Recommendation.deleteMany({ user: userDetails.id }).exec();
+        const promises = [];
+        articlesId.map(async (val) => {
+            const axiosPromise = await axios.get(`http://127.0.0.1:8000/author/${val}`);
+            const data = {
+                name: `${userDetails.firstName} ${userDetails.lastName}`,
+                user: user.id,
+                recommendation: val,
+                author: axiosPromise.data.author_name
+            }
+            const recommendationPromise = Recommendation.create(data);
+            promises.push(recommendationPromise);
+        })
+        await Promise.all(promises);
+        res.status(200).json({});
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Unable to find the user' });
     }
 })
 
-app.get('/checkuser', verifyToken, async (req, res) => {
+app.put('/updaterecommendation', verifyToken, async (req, res) => {
     try {
-        const id = req.query.blogId;
-        const blogDetails = await Blog.findOne({ _id: id }).exec();
-        const userId = blogDetails.author;
-        const userDetails = await User.findOne({ _id: userId }).exec();
-        res.status(200).json({ email: userDetails.email });
+        const { articlesId } = req.body;
+        const { user } = req.userData;
+        const userDetails = await User.findOne({ email: user.email }).exec();
+        // const userRecomm = await Recommendation.findOne({ user: userDetails._id }).exec();
+        await Recommendation.deleteMany({ user: userDetails.id }).exec();
+        const promises = [];
+        articlesId.map(async (val) => {
+            const axiosPromise = await axios.get(`http://127.0.0.1:8000/author/${val}`);
+            const data = {
+                name: `${userDetails.firstName} ${userDetails.lastName}`,
+                user: userDetails._id,
+                recommendation: val,
+                author: axiosPromise.data.author_name
+            }
+            const recommendationPromise = Recommendation.create(data);
+            promises.push(recommendationPromise);
+        })
+
+        await Promise.all(promises);
+        return res.status(200).json({});
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Unable to find the user details' });
+        res.status(500).json({ message: 'Error while updating the recommendation' });
     }
 })
 
-app.get('/', (req, res) => {
-    res.send("Welcome to ADT Assignment");
+app.get('/recommendation', verifyToken, async (req, res) => {
+    try {
+        const { user } = req.userData;
+        const userDetails = await User.findOne({ email: user.email }).exec();
+        const userRecomm = await Recommendation.find({ user: userDetails._id });
+        if (userRecomm.length == 0) {
+            return res.status(200).json([]);
+        }
+        const recomArray = userRecomm.map((det) => {
+            return det.recommendation
+        })
+        res.status(200).json(recomArray);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error while finding the recommendation' });
+    }
 })
 
 

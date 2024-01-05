@@ -1,0 +1,92 @@
+//colors
+$color-black-1: #212529;
+$color-black-2: rgba(39, 39, 39, 0.12);
+$color-black-3: #232619;
+$color-black-4: #282c1a;
+$color-white-1: #ffffff;
+$color-white-2: #f8f9fa;
+$color-white-3: #f2f2f2;
+$color-white-4: #eeeeee;
+$color-green-1: #c3e54a;
+$color-green-2: #afd03a;
+$color-green-3: #d5f88c;
+$color-green-4: #738c4a;
+$color-green-5: #a1c12e;
+$color-green-6: #c4e64c;
+$color-gray-1: #868e96;
+$color-gray-2: #e5e5e5;
+$color-gray-3: #5c6370;
+$color-gray-4: #d6d8e1;
+$color-gray-5: #eaedf0;
+$color-gray-6: #d1d5db;
+$color-gray-7: #5d666f;
+$color-red-1: #dd3c10;
+$color-pink-1: #ff5b84;
+$color-pink-2: rgba(255, 91, 132, 1);
+$color-blue-1: #00b7eb;
+$color-blue-2: #51cbee;
+$color-blue-3: rgba(4, 177, 227, 1);
+$color-blue-4: #4cccf1;
+$color-blue-green-1: #30d5c8;
+$color-blue-green-2: rgba(151, 245, 238, 1);
+$color-blue-green-3: #6ee1d8;
+$color-purple-1: rgba(204, 164, 255, 1);
+
+//background colors
+$bg-color-alpha: $color-black-1;
+$bg-color-beta: $color-white-1;
+$bg-color-gamma: $color-green-1;
+$bg-color-delta: $color-green-2;
+$bg-color-espilon: $color-green-3;
+$bg-color-zeta: $color-gray-1;
+$bg-color-eta: $color-white-3;
+$bg-color-theta: $color-black-2;
+$bg-color-iota: $color-pink-1;
+$bg-color-kappa: $color-pink-2;
+$bg-color-lambda: $color-blue-1;
+$bg-color-mu: $color-blue-2;
+$bg-color-nu: $color-blue-3;
+$bg-color-xi: $color-blue-green-1;
+$bg-color-omnicon: $color-blue-green-2;
+$bg-color-pi: $color-purple-1;
+$bg-color-rho: $color-blue-green-3;
+$bg-color-sigma: $color-blue-4;
+
+// border colors
+$br-color-alpha: $color-black-1;
+$br-color-beta: $color-gray-2;
+$br-color-gamma: $color-white-2;
+$br-color-delta: $color-gray-5;
+$br-color-epsilon: $color-gray-6;
+$br-color-zeta: $color-red-1;
+$br-color-eta: $color-white-4;
+$br-color-theta: $color-blue-green-1;
+
+//text colors
+$text-color-alpha: $color-black-1;
+$text-color-beta: $color-white-1;
+$text-color-gamma: $color-green-1;
+$text-color-delta: $color-green-2;
+$text-color-epsilon: $color-green-4;
+$text-color-zeta: $color-gray-1;
+$text-color-eta: $color-gray-3;
+$text-color-theta: $color-gray-4;
+$text-color-iota: $color-red-1;
+$text-color-kappa: $color-gray-7;
+
+//break points
+$xxlg-screen: 1320px;
+$lg-screen: 1200px;
+$md-screen: 900px;
+$sm-screen: 600px;
+$xs-screen: 400px;
+$xxs-screen: 375px;
+
+// font family
+$font-family-alpha: Inter;
+
+// default values
+$header-height: 65px;
+$footer-height: 90px;
+$lg-navigation-width: 240px;
+$sm-navigation-width: 60px;

@@ -2,193 +2,201 @@ import React, { useEffect, useState } from 'react';
 import axiosInterceptorInstance from '../../utils/interceptor';
 import './blogs.scss';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../../components';
+import axios from 'axios';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 function Blogs() {
-    const [blogs, setBlogs] = useState([]);
-    const [correctUsers, setCorrectUsers] = useState<any>({});
-    const [showComments, setShowComments] = useState<any>({});
-    const [commentsData, setCommentsData] = useState<any>({});
-    const [tags, setTags] = useState('')
-    const [comment, setComment] = useState('');
-    const navigate = useNavigate();
-    const getBlogs = async () => {
-        const response = await axiosInterceptorInstance.get('/blog/all');
-        setBlogs(response.data);
-        // Initialize correctUsers for all blogs to false
-        const initialCorrectUsers = response.data.reduce((acc: any, blog: any) => {
-            acc[blog._id] = false;
-            return acc;
-        }, {});
-        const initialComments = response.data.reduce((acc: any, blog: any, index: number) => {
-            acc[index] = false;
-            return acc;
-        }, {});
-        setShowComments(initialComments);
+    const [data, setData] = useState({
+        read_articles: [],
+        recommended_articles: []
+    })
+    const [currentRecommendation, setCurrentRecommendation] = useState([]);
+    const [noOfRecommendation, setNoOfRecommendation] = React.useState('7');
+    const [currentArticle, setCurrentArticle] = React.useState('0');
+    const [open, setOpen] = React.useState(false);
+    const [allArticles, setAllArticles] = useState({
+        articles: []
+    });
+
+    const [update, setUpdate] = useState(1);
+
+    const updateRecommendation = async (val: string) => {
+        await axiosInterceptorInstance.put('/updaterecommendation', {
+            articlesId: [...currentRecommendation, Number(val)]
+        })
+        setUpdate(update + 1);
     }
+
+    const handleArticleChange = (event: SelectChangeEvent) => {
+        setCurrentArticle(event.target.value as string);
+        updateRecommendation(event.target.value as string);
+    }
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setNoOfRecommendation(event.target.value as string);
+    };
+    const navigate = useNavigate();
+
+    const getRecommendationNumber = async () => {
+        const response = await axiosInterceptorInstance.get('/recommendation');
+        setCurrentRecommendation(response.data);
+        getRecommendationArticles(response.data, noOfRecommendation);
+    }
+
+    const getRecommendationArticles = async (resp: any, noOfRecommendation: string) => {
+        const recommResponse = await axios.post(`http://127.0.0.1:8000/recommend/${noOfRecommendation}`, {
+            articleIds: resp
+        });
+        setData(recommResponse.data);
+    }
+
+    const getAll = async () => {
+        const recommResponse = await axios.get(`http://127.0.0.1:8000/allarticles`);
+        setAllArticles(recommResponse.data);
+    }
+
+
     useEffect(() => {
-        getBlogs();
-    }, [])
+        setOpen(true);
+        getRecommendationNumber();
+        getAll();
+        setTimeout(() => {
+            setOpen(false);
+        }, 1000);
+    }, [noOfRecommendation, update])
+
+
     const logout = () => {
         localStorage.clear();
         navigate('/');
     }
-    const isCorrectUser = async (blogId: string) => {
-        try {
-            const response = await axiosInterceptorInstance.get(`/checkUser`, {
-                params: { blogId }
-            });
-            const current = localStorage.getItem('user');
-            setCorrectUsers((prevState: any) => ({ ...prevState, [blogId]: response?.data?.email === current }));
-        } catch (error) {
-            console.error('There was an error!', error);
-        }
-    }
-    const updateBlog = (blog: any) => {
-        localStorage.setItem('blog', JSON.stringify(blog));
-        localStorage.setItem('updateBlog', '1');
-        navigate('/create');
-    }
-    useEffect(() => {
-        blogs.forEach((blog: any) => {
-            isCorrectUser(blog._id)
-        });
-    }, [blogs]);
 
-    const deleteBlog = async (blog: any) => {
-        try {
-            const id = blog._id;
-            const deleteResponse = await axiosInterceptorInstance.delete('/blog/delete', {
-                params: {
-                    id
-                }
-            })
-            if (deleteResponse.data.message === 'successful') {
-                getBlogs();
-            }
-        } catch (error) {
-        }
-    }
-    const updateShowComments = async (index: number, id: string) => {
-        const commentsResponse = await axiosInterceptorInstance.get('/blog/getcomments', {
-            params: {
-                id
-            }
+    const articleListStyle = {
+        maxWidth: '800px',
+        margin: 'auto',
+        fontFamily: 'Arial, sans-serif',
+    };
+
+    const headerStyle = {
+        borderBottom: '2px solid #333',
+        paddingBottom: '10px',
+        marginBottom: '20px',
+        color: '#333',
+    };
+
+    const listStyle = {
+        listStyleType: 'none',
+        padding: 0,
+    };
+
+    const listItemStyle = {
+        margin: '10px 0',
+        padding: '15px',
+        background: '#fff',
+        borderRadius: '8px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.2s ease-in-out',
+        cursor: 'pointer',
+    };
+
+    const hoverStyles = {
+        transform: 'scale(1.05)',
+        boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)',
+    };
+
+    const resetRecommendation = async () => {
+        await axiosInterceptorInstance.put('/updaterecommendation', {
+            articlesId: []
         })
-        setCommentsData((previousState: any) => ({ ...previousState, [id]: commentsResponse.data }));
-        setShowComments((previousState: any) => ({ ...previousState, [index]: !showComments[index] }));
-    }
-    const addComment = async (blog: any) => {
-        const commentResponse = await axiosInterceptorInstance.post('/blog/comment', {
-            comment: comment,
-            blogId: blog._id,
-            user: localStorage.getItem('user')
-        })
-        if (commentResponse.status === 200) {
-            window.location.reload();
-        }
+        setCurrentArticle('0');
+        setNoOfRecommendation('7');
+        setUpdate(update + 1);
     }
 
-    const getDate = (date: Date) => {
-        const newDate = new Date(date);
-        return `${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`
-    }
+    const rec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-    const checkKeys = async (event: any) => {
-        const key = event.key;
-        const value = event.target.value;
-        if (key !== 'Enter') return;
-        const name = event.target.name;
-        if (name === 'tags') {
-            const response = await axiosInterceptorInstance.get(`/blog/all?tags=${value}`);
-            setBlogs(response.data);
-            const initialCorrectUsers = response.data.reduce((acc: any, blog: any) => {
-                acc[blog._id] = false;
-                return acc;
-            }, {});
-            const initialComments = response.data.reduce((acc: any, blog: any, index: number) => {
-                acc[index] = false;
-                return acc;
-            }, {});
-            setShowComments(initialComments);
-        } else if (name === 'categories') {
-            const response = await axiosInterceptorInstance.get(`/blog/all?categories=${value}`);
-            setBlogs(response.data);
-            const initialCorrectUsers = response.data.reduce((acc: any, blog: any) => {
-                acc[blog._id] = false;
-                return acc;
-            }, {});
-            const initialComments = response.data.reduce((acc: any, blog: any, index: number) => {
-                acc[index] = false;
-                return acc;
-            }, {});
-            setShowComments(initialComments);
-        }
-    }
+
     return (
         <div className='container'>
-            <h3 className='add-blog'><a href='/create'>Add new Blog</a></h3>
-            <h3 className='logout' onClick={logout}>Logout</h3>
-            <h1><u>List of all Blog Posts</u></h1>
-            {blogs.length > 0 && <div className="form-field query">
-                <input type='text' name='tags' placeholder='Enter Tags' className='input' onKeyDown={checkKeys}></input>
-                <input type='text' name='categories' placeholder='Enter Categories' className='input' onKeyDown={checkKeys}></input>
-            </div>}
-            {blogs.length > 0 ? <div className="blogs-container">
-                {blogs.map((blog: any, index: number) => {
-                    return (
-                        <div className='blog-cont' key={index}>
-                            <div className='blog-cont-one'>
-                                {correctUsers[blog._id] ? (
-                                    <div className='perform-action'>
-                                        <button className='perform' onClick={() => updateBlog(blog)}>Update Blog</button>
-                                        <button className='perform' onClick={() => deleteBlog(blog)}>Delete Blog</button>
-                                    </div>
-                                ) : null}
-                                <div className='blog-section shadow'>
-                                    <button className='comments' onClick={() => updateShowComments(index, blog._id)}>Show comments</button>
-                                    <h2 className='blog-title'>{blog.title}</h2>
-                                    <h3 className='blog-title'>{blog.content}</h3>
-                                    <h4 className='blog-user'> {blog.authorName}</h4>
-                                    {blog?.categories?.length > 0 ? <div className='categories-container'>
-                                        <h3>Categories : </h3>
-                                        {blog?.categories.map((cat: any, index: number) => {
-                                            return (
-                                                <span key={index} className='category'>{cat}</span>
-                                            )
-                                        })}
-                                    </div> : ''}
-                                    {blog?.tags?.length > 0 ? <div className='tags-container'>
-                                        <h3>Tags : </h3>
-                                        {blog?.tags.map((tag: any, index: number) => {
-                                            return (
-                                                <span key={index} className='tag'>{tag}</span>
-                                            )
-                                        })}
-                                    </div> : ''}
-                                    <span className='created-at'><b>Created At : </b>{`${getDate(blog.createdAt)}`}</span>
-                                </div>
-                            </div>
-                            {showComments[index] ? <div className='comments-cont'>
-                                {commentsData[blog._id]?.map((comm: any) => {
-                                    return (
-                                        <div className='comments-cont-one' key={comm._id}>
-                                            <p>{comm.text}</p>
-                                            <span>{`By - ${comm.commenterName}`}</span>
-                                        </div>
-                                    )
-                                })}
-                                <div className='add-comment'>
-                                    <input type='text' name='add-comment' value={comment} onChange={(e) => setComment(e.target.value)} />
-                                    <button onClick={() => addComment(blog)}>Add comment</button>
-                                </div>
-                            </div> : null}
-                        </div>
-                    )
-                })}
-            </div> : <h2 className='noblog'>No Blogs Available</h2>}
-        </div>
+            <button className='logout' onClick={logout}><b>{localStorage.getItem('user')},</b> Logout</button>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <h1><u>Recommended Articles</u></h1>
+            <div className='art-cont'>
+                {data.read_articles.length > 0 && <Box sx={{ maxWidth: 150 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Rec</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={noOfRecommendation}
+                            label="Age"
+                            onChange={handleChange}
+                        >
+                            {rec.map((val: number, index: number) => {
+                                return (
+                                    <MenuItem value={val} key={index}>{val}</MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+                </Box>}
+                {allArticles.articles.length > 0 && <Box sx={{ maxWidth: 450 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Articles</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={currentArticle}
+                            label="Articles"
+                            onChange={handleArticleChange}
+                        >
+                            {allArticles.articles.map((art: any, index: number) => {
+                                return (
+                                    <MenuItem value={art.Article_Id as string} key={index}><b>{art.Article_Id}</b> - {art.Title} - <b>{art.Author}</b></MenuItem>
+                                )
+                            })}
+
+                        </Select>
+                    </FormControl>
+                </Box>}
+                {currentRecommendation.length > 0 ? < button className='btn' onClick={resetRecommendation}>Reset Recommendations</button> : ''}
+            </div>
+            {
+                data.recommended_articles.length > 0 && !open ? <div className="blogs-container">
+                    <div style={articleListStyle}>
+                        <h2 style={headerStyle}>Read Articles</h2>
+                        <ul style={listStyle}>
+                            {data.read_articles.map((article: any) => (
+                                <li key={article.Article_Id} style={{ ...listItemStyle, ...hoverStyles }}>
+                                    {article.Title}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <h2 style={headerStyle}>Recommended Articles</h2>
+                        <ul style={listStyle}>
+                            {data.recommended_articles.map((article: any) => (
+                                <li key={article.Article_Id} style={{ ...listItemStyle, ...hoverStyles }}>
+                                    {article.Title}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div> : <h2 className='noblog'>No Recommendations Available</h2>
+            }
+        </div >
     );
 }
 
 export default Blogs;
+

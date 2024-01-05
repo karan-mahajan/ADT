@@ -1,5 +1,13 @@
 @use '../../assets/styles/_variables';
 
+$button-bg-color: #3498db;
+$button-hover-color: #2980b9;
+$button-text-color: #ffffff;
+$button-hover-text-color: #ffffff;
+$button-padding: 10px 20px;
+$button-border-radius: 5px;
+$button-transition: 0.3s ease-in-out;
+
 button {
     cursor: pointer;
 }
@@ -107,15 +115,6 @@ button {
             }
         }
 
-        &.logout {
-            text-align: right;
-            cursor: pointer;
-            color: #E74C3C; // Red to indicate caution
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
     }
 
     .noblog {
@@ -363,5 +362,41 @@ button {
                 font-weight: bold;
             }
         }
+    }
+}
+
+
+.art-cont {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    align-items: center;
+    gap: 30px;
+
+    .btn {
+        background: #c76262;
+        color: black;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.logout {
+    background-color: $button-bg-color;
+    color: $button-text-color;
+    padding: $button-padding;
+    border: none;
+    border-radius: $button-border-radius;
+    cursor: pointer;
+    transition: background-color $button-transition, color $button-transition;
+    top: 0;
+    right: 0;
+    position: absolute;
+
+    &:hover {
+        background-color: $button-hover-color;
+        color: $button-hover-text-color;
     }
 }

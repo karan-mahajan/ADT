@@ -19,7 +19,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path='/blogs' element={<AuthenticatedBlogs />} />
+          <Route path='/article' element={<AuthenticatedBlogs />} />
           <Route path='/create' element={<AuthenticatedCreate />} />
           <Route path="*" element={<Nomatch />} />
         </Routes>

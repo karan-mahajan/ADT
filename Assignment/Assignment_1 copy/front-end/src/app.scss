@@ -1,0 +1,187 @@
+@use './assets/styles/_variables.scss';
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.app-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  &-body {
+    margin-left: 240px;
+    &-container {
+      margin: 2% 3%;
+      height: 100%;
+      min-height: 100vh;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.heading {
+  font-weight: 600;
+  font-size: 1.45rem;
+  line-height: 28px;
+  color: variables.$text-color-alpha;
+}
+
+.background-objects {
+  position: absolute;
+}
+
+.login-container {
+  margin-left: unset;
+}
+
+.background {
+  &-cloud-one {
+    position: absolute;
+    right: 220px;
+    top: 100px;
+    z-index: -1;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-cloud-two {
+    position: absolute;
+    right: 0;
+    top: 120px;
+    z-index: -1;
+    path {
+      stroke: #f5f5f5;
+      fill: variables.$bg-color-beta;
+    }
+  }
+  &-right-oval {
+    position: absolute;
+    right: 0;
+    top: 250px;
+    z-index: -1;
+    path {
+      z-index: -1;
+    }
+  }
+  &-left-oval {
+    position: absolute;
+    left: 80px;
+    top: 350px;
+    z-index: 2;
+  }
+}
+
+.error-msg {
+  color: variables.$text-color-iota;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  z-index: 2;
+}
+
+.toast-container {
+  .Toastify__toast-body {
+    font-family: variables.$font-family-alpha;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 24px;
+  }
+}
+
+.login-loading-backdrop.MuiCircularProgress-root {
+  color: variables.$text-color-delta;
+}
+
+.align-center {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.loading {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 2px solid variables.$br-color-theta;
+  border-radius: 50%;
+  border-top-color: variables.$br-color-theta;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  position: fixed;
+  z-index: 1;
+}
+
+.filters-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  &-label {
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: variables.$text-color-alpha;
+  }
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: variables.$md-screen) {
+  .content {
+    &-body {
+      margin-left: 60px;
+      &-container {
+        margin: 4%;
+      }
+    }
+  }
+  .background {
+    &-cloud-one,
+    &-cloud-two,
+    &-right-oval,
+    &-left-oval {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: variables.$sm-screen) {
+  .Toastify__toast-container.toast-container {
+    padding: 10px 20px;
+  }
+  .heading {
+    font-size: 1.15rem;
+    line-height: 28px;
+  }
+}
